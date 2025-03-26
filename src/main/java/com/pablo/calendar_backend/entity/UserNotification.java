@@ -37,15 +37,22 @@ public class UserNotification {
     )
     private LocalDate date;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "user_id"
+    )
+    private User user;
+
     public UserNotification() {
     }
 
-    public UserNotification(String title, Long id, String content, NotificationType type, LocalDate date) {
+    public UserNotification(String title, Long id, String content, NotificationType type, LocalDate date, User user) {
         this.title = title;
         this.id = id;
         this.content = content;
         this.type = type;
         this.date = date;
+        this.user = user;
     }
 
     public Long getId() {
@@ -86,5 +93,13 @@ public class UserNotification {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
