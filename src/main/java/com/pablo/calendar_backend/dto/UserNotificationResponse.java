@@ -22,6 +22,8 @@ public class UserNotificationResponse {
     @NotBlank
     private String type;
 
+    private Boolean expired;
+
     public UserNotificationResponse() {
     }
 
@@ -30,6 +32,7 @@ public class UserNotificationResponse {
         this.content = userNotification.getContent();
         this.date = userNotification.getDate();
         this.type = userNotification.getType().getName();
+        this.expired = this.date.isBefore(LocalDate.now());
     }
 
     public String getTitle() {
@@ -63,5 +66,7 @@ public class UserNotificationResponse {
     public void setType(String type) {
         this.type = type;
     }
+
+    public boolean getExpired() {return this.expired;}
 
 }
