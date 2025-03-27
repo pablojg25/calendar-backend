@@ -32,12 +32,12 @@ public class UserNotificationController {
         return service.findNotificationById(id);
     }
 
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ApiRes<UserNotificationResponse>> updateNotification(@PathVariable Long id, @RequestBody UserNotificationRequest request) {
         return service.updateNotification(id,request);
     }
 
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiRes<Void>> deleteNotification(@PathVariable Long id) {
         return service.deleteNotification(id);
     }

@@ -1,6 +1,7 @@
 package com.pablo.calendar_backend.service;
 
 import com.pablo.calendar_backend.ApiRes;
+import com.pablo.calendar_backend.auth.service.AuthService;
 import com.pablo.calendar_backend.dto.UserNotificationRequest;
 import com.pablo.calendar_backend.dto.UserNotificationResponse;
 import com.pablo.calendar_backend.entity.NotificationType;
@@ -11,6 +12,9 @@ import com.pablo.calendar_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,9 +29,12 @@ public class UserNotificationService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AuthService authService;
+
     public ResponseEntity<ApiRes<List<UserNotificationResponse>>> findUserNotifications() {
-        Long userId = 0L;
-        User found = userRepository.findById(userId).orElse(null);
+        String username = authService.getAuthenticatedUsername();
+        User found = userRepository.findByUsername(username).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
         List<UserNotificationResponse> body = null;
@@ -49,8 +56,8 @@ public class UserNotificationService {
     }
 
     public ResponseEntity<ApiRes<UserNotificationResponse>> createNotification(UserNotificationRequest request) {
-        Long userId = 0L;
-        User found = userRepository.findById(userId).orElse(null);
+        String username = authService.getAuthenticatedUsername();
+        User found = userRepository.findByUsername(username).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
         UserNotificationResponse body = null;
@@ -79,8 +86,8 @@ public class UserNotificationService {
     }
 
     public ResponseEntity<ApiRes<UserNotificationResponse>> findNotificationById(Long notifId) {
-        Long userId = 0L;
-        User user = userRepository.findById(userId).orElse(null);
+        String username = authService.getAuthenticatedUsername();
+        User user = userRepository.findByUsername(username).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
         UserNotificationResponse body = null;
@@ -99,8 +106,8 @@ public class UserNotificationService {
     }
 
     public ResponseEntity<ApiRes<UserNotificationResponse>> updateNotification(Long notifId, UserNotificationRequest request) {
-        Long userId = 0L;
-        User user = userRepository.findById(userId).orElse(null);
+        String username = authService.getAuthenticatedUsername();
+        User user = userRepository.findByUsername(username).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
         UserNotificationResponse body = null;
@@ -131,8 +138,8 @@ public class UserNotificationService {
     }
 
     public ResponseEntity<ApiRes<Void>> deleteNotification(Long notifId) {
-        Long userId = 0L;
-        User user = userRepository.findById(userId).orElse(null);
+        String username = authService.getAuthenticatedUsername();
+        User user = userRepository.findByUsername(username).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
         if (user != null) {
