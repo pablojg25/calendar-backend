@@ -9,6 +9,9 @@ import java.time.LocalDate;
 
 public class UserNotificationResponse {
 
+    @NotNull
+    private Long id;
+
     @NotBlank
     private String title;
 
@@ -28,11 +31,20 @@ public class UserNotificationResponse {
     }
 
     public UserNotificationResponse(UserNotification userNotification) {
+        this.id = userNotification.getId();
         this.title = userNotification.getTitle();
         this.content = userNotification.getContent();
         this.date = userNotification.getDate();
         this.type = userNotification.getType().getName();
-        this.expired = this.date.isBefore(LocalDate.now());
+        this.expired = userNotification.getDate().isBefore(LocalDate.now());
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
