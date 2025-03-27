@@ -25,7 +25,7 @@ public class UserNotification {
     )
     private String content;
 
-    @NotBlank
+    @NotNull
     @Column(
             nullable=false
     )
@@ -39,7 +39,8 @@ public class UserNotification {
 
     @ManyToOne
     @JoinColumn(
-            name = "user_id"
+            name = "user_id",
+            nullable = false
     )
     private User user;
 
