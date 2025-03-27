@@ -1,7 +1,6 @@
 package com.pablo.calendar_backend.entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public enum NotificationType {
 
@@ -26,6 +25,15 @@ public enum NotificationType {
             values.add(type.getName());
         }
         return values;
+    }
+
+    public static NotificationType fromString(String name) {
+        for (NotificationType type : NotificationType.values()) {
+            if (type.getName().equalsIgnoreCase(name)) {
+                return type;
+            }
+        }
+        return null;
     }
 
 }

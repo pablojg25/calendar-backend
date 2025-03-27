@@ -55,15 +55,20 @@ public class UserNotificationService {
         String message = "Usuario no encontrado";
         UserNotificationResponse body = null;
         if (found != null) {
-            UserNotification newNotif = new UserNotification();
-            newNotif.setTitle(request.getTitle());
-            newNotif.setContent(request.getContent());
-            newNotif.setDate(request.getDate());
-            newNotif.setType(NotificationType.valueOf(request.getType()));
-            newNotif.setUser(found);
-            body = new UserNotificationResponse(userNotificationRepository.save(newNotif));
-            status = HttpStatus.CREATED;
-            message = "Notificación creada";
+            NotificationType type = NotificationType.fromString(request.getType());
+            status = HttpStatus.BAD_REQUEST;
+            message = "Tipo de notificación no válido";
+            if (type != null) {
+                UserNotification newNotif = new UserNotification();
+                newNotif.setTitle(request.getTitle());
+                newNotif.setContent(request.getContent());
+                newNotif.setDate(request.getDate());
+                newNotif.setType(type);
+                newNotif.setUser(found);
+                body = new UserNotificationResponse(userNotificationRepository.save(newNotif));
+                status = HttpStatus.CREATED;
+                message = "Notificación creada";
+            }
         }
         ApiRes<UserNotificationResponse> response = new ApiRes<>(
                 status.value(),
@@ -103,13 +108,18 @@ public class UserNotificationService {
             UserNotification found = userNotificationRepository.findByIdAndUser(notifId,user).orElse(null);
             message = "Notificación no encontrada";
             if (found != null) {
-                found.setTitle(request.getTitle());
-                found.setContent(request.getContent());
-                found.setType(NotificationType.valueOf(request.getType()));
-                found.setDate(request.getDate());
-                body = new UserNotificationResponse(userNotificationRepository.save(found));
-                status = HttpStatus.OK;
-                message = "Notificación actualizada";
+                NotificationType type = NotificationType.fromString(request.getType());
+                status = HttpStatus.BAD_REQUEST;
+                message = "Tipo de notificación no válido";
+                if (type != null) {
+                    found.setTitle(request.getTitle());
+                    found.setContent(request.getContent());
+                    found.setType(type);
+                    found.setDate(request.getDate());
+                    body = new UserNotificationResponse(userNotificationRepository.save(found));
+                    status = HttpStatus.OK;
+                    message = "Notificación actualizada";
+                }
             }
         }
         ApiRes<UserNotificationResponse> response = new ApiRes<>(
