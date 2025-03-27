@@ -20,8 +20,8 @@ public enum NotificationType {
         return name;
     }
 
-    public static List<String> getValues() {
-        List<String> values = new ArrayList<>();
+    public static ArrayList<String> getValues() {
+        ArrayList<String> values = new ArrayList<>();
         for (NotificationType type : NotificationType.values()) {
             values.add(type.getName());
         }
