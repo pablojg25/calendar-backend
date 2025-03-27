@@ -25,8 +25,9 @@ public class UserNotificationService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseEntity<ApiRes<List<UserNotificationResponse>>> findUserNotifications(Long id) {
-        User found = userRepository.findById(id).orElse(null);
+    public ResponseEntity<ApiRes<List<UserNotificationResponse>>> findUserNotifications() {
+        Long userId = 0L;
+        User found = userRepository.findById(userId).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
         List<UserNotificationResponse> body = null;
@@ -47,8 +48,9 @@ public class UserNotificationService {
         return ResponseEntity.status(status).body(response);
     }
 
-    public ResponseEntity<ApiRes<UserNotificationResponse>> createNotification(Long id, UserNotificationRequest request) {
-        User found = userRepository.findById(id).orElse(null);
+    public ResponseEntity<ApiRes<UserNotificationResponse>> createNotification(UserNotificationRequest request) {
+        Long userId = 0L;
+        User found = userRepository.findById(userId).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
         UserNotificationResponse body = null;
@@ -71,7 +73,8 @@ public class UserNotificationService {
         return ResponseEntity.status(status).body(response);
     }
 
-    public ResponseEntity<ApiRes<UserNotificationResponse>> findNotificationById(Long userId, Long notifId) {
+    public ResponseEntity<ApiRes<UserNotificationResponse>> findNotificationById(Long notifId) {
+        Long userId = 0L;
         User user = userRepository.findById(userId).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
@@ -90,7 +93,8 @@ public class UserNotificationService {
         return ResponseEntity.status(status).body(response);
     }
 
-    public ResponseEntity<ApiRes<UserNotificationResponse>> updateNotification(Long userId, Long notifId, UserNotificationRequest request) {
+    public ResponseEntity<ApiRes<UserNotificationResponse>> updateNotification(Long notifId, UserNotificationRequest request) {
+        Long userId = 0L;
         User user = userRepository.findById(userId).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
@@ -116,7 +120,8 @@ public class UserNotificationService {
         return ResponseEntity.status(status).body(response);
     }
 
-    public ResponseEntity<ApiRes<Void>> deleteNotification(Long userId, Long notifId) {
+    public ResponseEntity<ApiRes<Void>> deleteNotification(Long notifId) {
+        Long userId = 0L;
         User user = userRepository.findById(userId).orElse(null);
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = "Usuario no encontrado";
