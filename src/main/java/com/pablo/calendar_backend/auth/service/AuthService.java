@@ -6,7 +6,6 @@ import com.pablo.calendar_backend.auth.dto.LoginRequest;
 import com.pablo.calendar_backend.auth.dto.RegisterRequest;
 import com.pablo.calendar_backend.entity.User;
 import com.pablo.calendar_backend.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
