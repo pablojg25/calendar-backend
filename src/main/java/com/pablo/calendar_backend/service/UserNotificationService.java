@@ -36,7 +36,7 @@ public class UserNotificationService {
         String message = "Usuario no encontrado";
         List<UserNotificationResponse> body = null;
         if (found != null) {
-            List<UserNotification> foundNotifs = userNotificationRepository.findByUser(found);
+            List<UserNotification> foundNotifs = userNotificationRepository.findByUserOrderByDate(found);
             body = new ArrayList<>();
             for (UserNotification notification : foundNotifs) {
                 body.add(new UserNotificationResponse(notification));
@@ -154,6 +154,15 @@ public class UserNotificationService {
                 null
         );
         return ResponseEntity.status(status).body(response);
+    }
+
+    public ResponseEntity<ApiRes<List<String>>> findNotificationTypes() {
+        ApiRes<List<String>> response = new ApiRes<>(
+                HttpStatus.OK.value(),
+                "Tipos de notificación",
+                NotificationType.getValues()
+        );
+        return ResponseEntity.ok(response);
     }
 
 }

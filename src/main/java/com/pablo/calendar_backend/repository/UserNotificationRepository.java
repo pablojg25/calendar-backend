@@ -13,7 +13,7 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
 
     Optional<UserNotification> findByIdAndUser(Long id, User user);
 
-    List<UserNotification> findByUser(User user);
+    List<UserNotification> findByUserOrderByDate(User user);
 
     UserNotification save(UserNotification notification);
 

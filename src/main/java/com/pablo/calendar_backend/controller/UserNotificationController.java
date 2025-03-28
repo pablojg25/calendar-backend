@@ -43,4 +43,9 @@ public class UserNotificationController {
         return service.deleteNotification(id);
     }
 
+    @GetMapping("/types")
+    public ResponseEntity<ApiRes<List<String>>> findNotificationTypes() {
+        return service.findNotificationTypes();
+    }
+
 }
