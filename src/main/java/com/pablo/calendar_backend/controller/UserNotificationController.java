@@ -48,4 +48,9 @@ public class UserNotificationController {
         return service.findNotificationTypes();
     }
 
+
+    @DeleteMapping("/delete-past")
+    public ResponseEntity<ApiRes<Void>> deletePastNotifications() {
+        return service.deletePastUserNotifications();
+    }
 }

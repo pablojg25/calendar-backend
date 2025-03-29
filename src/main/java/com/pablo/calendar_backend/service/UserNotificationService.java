@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,6 +164,24 @@ public class UserNotificationService {
                 NotificationType.getValues()
         );
         return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<ApiRes<Void>> deletePastUserNotifications() {
+        String username = authService.getAuthenticatedUsername();
+        User user = userRepository.findByUsername(username).orElse(null);
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String message = "Usuario no encontrado";
+        if (user != null) {
+            userNotificationRepository.deletePastUserNotifications(user, LocalDate.now());
+            status = HttpStatus.OK;
+            message = "Notificaciones eliminadas";
+        }
+        ApiRes<Void> response = new ApiRes<>(
+                status.value(),
+                message,
+                null
+        );
+        return ResponseEntity.status(status).body(response);
     }
 
 }
