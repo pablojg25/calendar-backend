@@ -27,9 +27,4 @@ public class AuthController {
         return authService.login(request);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<ApiRes<Void>> deleteUser() {
-        return authService.deleteUser();
-    }
-
 }

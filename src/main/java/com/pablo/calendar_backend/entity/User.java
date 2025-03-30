@@ -3,6 +3,7 @@ package com.pablo.calendar_backend.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -38,6 +39,12 @@ public class User implements UserDetails {
     )
     private String password;
 
+    @NotNull
+    @Column(
+            nullable = false
+    )
+    private Boolean visible;
+
     @OneToMany(mappedBy="user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserNotification> userNotifications = new ArrayList<>();
 
@@ -50,14 +57,16 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.userNotifications = new ArrayList<>();
+        this.visible = false;
     }
 
-    public User(Long id, String username, String email, String password, ArrayList<UserNotification> userNotifications) {
+    public User(Long id, String username, String email, String password, ArrayList<UserNotification> userNotifications, Boolean visible) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.userNotifications = userNotifications;
+        this.visible = visible;
     }
 
     public Long getId() {
@@ -98,6 +107,14 @@ public class User implements UserDetails {
 
     public void setUserNotifications(List<UserNotification> userNotifications) {
         this.userNotifications = userNotifications;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 
     @Override

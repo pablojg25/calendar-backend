@@ -30,7 +30,7 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<ApiRes<AuthResponse>> register(RegisterRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        /*HttpStatus status = HttpStatus.BAD_REQUEST;
         String message = "El nombre de usuario y/o email ya están en uso";
         AuthResponse body = null;
         if (!userRepository.existsByUsername(request.getUsername()) && !userRepository.existsByEmail(request.getEmail())) {
@@ -45,6 +45,28 @@ public class AuthService {
                 message,
                 body
         );
+        return ResponseEntity.ok(response);*/
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String message = "El nombre de usuario y/o email ya están en uso";
+        AuthResponse body = null;
+
+        try {
+            if (!userRepository.existsByUsername(request.getUsername()) && !userRepository.existsByEmail(request.getEmail())) {
+                User user = new User(request.getUsername(), request.getEmail(), passwordEncoder.encode(request.getPassword()));
+
+                System.out.println("Usuario a registrar: " + user);  // Log para ver el objeto antes de guardar
+                userRepository.save(user);
+
+                status = HttpStatus.CREATED;
+                message = "Usuario registrado correctamente";
+                body = new AuthResponse(jwtService.getToken(user));
+            }
+        } catch (Exception e) {
+            message = "Hubo un error al registrar el usuario: " + e.getMessage();
+            e.printStackTrace();  // Verifica los logs para cualquier excepción.
+        }
+
+        ApiRes<AuthResponse> response = new ApiRes<>(status.value(), message, body);
         return ResponseEntity.ok(response);
     }
 
@@ -74,24 +96,6 @@ public class AuthService {
             return ((UserDetails) authentication.getPrincipal()).getUsername();
         }
         return null;
-    }
-
-    public ResponseEntity<ApiRes<Void>> deleteUser() {
-        String username = getAuthenticatedUsername();
-        User user = userRepository.findByUsername(username).orElse(null);
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        String message = "El usuario no se encontró";
-        if (user != null) {
-            userRepository.delete(user);
-            status = HttpStatus.OK;
-            message = "Usuario eliminado";
-        }
-        ApiRes<Void> response = new ApiRes<>(
-                status.value(),
-                message,
-                null
-        );
-        return ResponseEntity.ok(response);
     }
 
 }
