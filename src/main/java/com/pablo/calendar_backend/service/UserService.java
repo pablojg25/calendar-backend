@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UserService {
 
@@ -67,6 +69,28 @@ public class UserService {
                 status.value(),
                 message,
                 null
+        );
+        return ResponseEntity.status(status).body(response);
+    }
+
+    public ResponseEntity<ApiRes<UserDTO>> findUserByEmail(String email) {
+        User user = userRepository.findByEmailAndVisibleIsTrue(email).orElse(null);
+        String message = "User not found";
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        UserDTO body = null;
+        if (user != null) {
+            message = "Can't search yourself";
+            status = HttpStatus.BAD_REQUEST;
+            if (!user.getUsername().equals(authService.getAuthenticatedUsername())) {
+                message = "User found";
+                status = HttpStatus.OK;
+                body = new UserDTO(user);
+            }
+        }
+        ApiRes<UserDTO> response = new ApiRes<>(
+                status.value(),
+                message,
+                body
         );
         return ResponseEntity.status(status).body(response);
     }

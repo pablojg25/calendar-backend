@@ -39,6 +39,7 @@ public class User implements UserDetails {
     )
     private String password;
 
+    //Comprobar que no tiene subscriptores antes de cambiarlo
     @NotNull
     @Column(
             nullable = false

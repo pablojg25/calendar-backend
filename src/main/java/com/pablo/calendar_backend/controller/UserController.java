@@ -29,4 +29,9 @@ public class UserController {
         return userService.deleteUser();
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<ApiRes<UserDTO>> findUserByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
+    }
+
 }
