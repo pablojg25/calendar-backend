@@ -10,6 +10,7 @@ import com.pablo.calendar_backend.entity.User;
 import com.pablo.calendar_backend.entity.UserNotification;
 import com.pablo.calendar_backend.repository.SubscriptionRepository;
 import com.pablo.calendar_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,7 @@ public class SubscriptionService {
         return ResponseEntity.status(status).body(response);
     }
 
+    @Transactional
     public ResponseEntity<ApiRes<Void>> unsubscribe(String email) {
         String username = authService.getAuthenticatedUsername();
         User subscriber = userRepository.findByUsername(username).orElse(null);

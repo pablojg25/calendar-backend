@@ -39,7 +39,6 @@ public class User implements UserDetails {
     )
     private String password;
 
-    //Comprobar que no tiene subscriptores antes de cambiarlo
     @NotNull
     @Column(
             nullable = false
@@ -48,6 +47,12 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy="user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserNotification> userNotifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "subscribedTo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscribers = new ArrayList<>();
 
     public User() {
         this.userNotifications = new ArrayList<>();
@@ -59,15 +64,19 @@ public class User implements UserDetails {
         this.password = password;
         this.userNotifications = new ArrayList<>();
         this.visible = false;
+        this.subscribers = new ArrayList<>();
+        this.subscriptions = new ArrayList<>();
     }
 
-    public User(Long id, String username, String email, String password, ArrayList<UserNotification> userNotifications, Boolean visible) {
+    public User(Long id, String username, String email, String password, ArrayList<UserNotification> userNotifications, Boolean visible, List<Subscription> subscribers, List<Subscription> subscriptions) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.userNotifications = userNotifications;
         this.visible = visible;
+        this.subscribers = subscribers;
+        this.subscriptions = subscriptions;
     }
 
     public Long getId() {
@@ -116,6 +125,22 @@ public class User implements UserDetails {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(List<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public List<Subscription> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(List<Subscription> subscribers) {
+        this.subscribers = subscribers;
     }
 
     @Override
